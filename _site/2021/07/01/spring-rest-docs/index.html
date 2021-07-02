@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css">
+  <link rel="stylesheet" href="/assets/styles.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Spring Rest Docs 적용기 | 개발 블로그 기록용</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Spring Rest Docs 적용기" />
+<meta name="author" content="JongHyun Lee" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="1. Spring Rest Docs 도입 이유" />
+<meta property="og:description" content="1. Spring Rest Docs 도입 이유" />
+<link rel="canonical" href="http://localhost:4000/2021/07/01/spring-rest-docs/" />
+<meta property="og:url" content="http://localhost:4000/2021/07/01/spring-rest-docs/" />
+<meta property="og:site_name" content="개발 블로그 기록용" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-01T00:00:00+09:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2021/07/01/spring-rest-docs/","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2021/07/01/spring-rest-docs/"},"author":{"@type":"Person","name":"JongHyun Lee"},"headline":"Spring Rest Docs 적용기","description":"1. Spring Rest Docs 도입 이유","dateModified":"2021-07-01T00:00:00+09:00","datePublished":"2021-07-01T00:00:00+09:00","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="개발 블로그 기록용" />
+</head>
+
+
+  <body>
+
+    <div class="container pure-g"><div class="sidebar-left pure-u-1 pure-u-md-1-4" style="background-color: rgb(40, 73, 77); color: rgb(255, 255, 255); background-image: url(/bg.jpeg);"><header class="masthead">
+  <div class="avatar"><img src="/avatar.jpeg" class="avatar-image" alt="JongHyun Lee">
+    </div>
+  <div class="masthead-title">
+    <a href="/" title="Home">개발 블로그 기록용</a>
+  </div>
+  <div class="masthead-tagline">
+    <small>쉽게 잊어버리는 문제해결 방안과 새로운 기술... <br />잊어버리기전에 기록하자...</small>
+  </div><nav class="navigation">
+    <ul class="navigation-list"><li class="navigation-item">
+        <a onclick="sessionStorage.setItem('forceCheckScroll', 'true')" href="/">Blog</a>
+      </li><li class="navigation-item">
+        <a onclick="sessionStorage.setItem('forceCheckScroll', 'true')" href="/about/">About</a>
+      </li></ul>
+  </nav><div class="social pure-menu pure-menu-horizontal">
+      <ul class="social-icons pure-menu-list">
+      <li class="pure-menu-item">
+          <a class="social-icon pure-menu-link" href="mailto://dev.jonghyun89@gmail.com">
+            <i class="fas fa-envelope" title="Email"></i>
+          </a>
+        </li><li class="pure-menu-item">
+          <a class="social-icon pure-menu-link" href="https://github.com/leejonghyun89">
+            <i class="fab fa-github" title="GitHub"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+</header>
+</div>
+
+      <div class="content pure-u-1 pure-u-md-1-2" style="width: 60%"><main>
+  <article class="post">
+  <h1 class="post-title">Spring Rest Docs 적용기</h1>
+  <div class="post-meta"><time datetime="2021-07-01T00:00:00+09:00" itemprop="datePublished">1 Jul 2021</time></div>
+
+  <h2 id="1-spring-rest-docs-도입-이유">1. Spring Rest Docs 도입 이유</h2>
+
+<p>지금까지 개발을 진행하면서 API 명세에 대한 정보 문서화 또는 Swagger 사용을 해왔습니다.<br />
+매번 API 개발을 할 때마다 명세에 대한 정보를 문서화를 하였고,<br />
+Swagger 사용을 위해 매번 Controller, Dto 단에 Swagger 어노테이션을 추가해야 하니<br />
+코드 보기가 좋지 않았습니다.</p>
+
+<p>그러다가 API 명세서를 자동화해주는 것을 찾다가 Spring Rest Docs 찾게 되어,<br />
+Spring Rest Docs를 적용하게 되었습니다.</p>
+
+<h2 id="2-spring-rest-docs와-swagger-장단점">2. Spring Rest Docs와 Swagger 장단점</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">Spring Rest Docs</th>
+      <th style="text-align: center">Swagger</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">장점</td>
+      <td style="text-align: center">제품코드에 영향이 없다.</td>
+      <td style="text-align: center">API 테스트 해 볼수 있는 화면을 제공한다</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">테스트 케이스가 성공해야 문서 작성이 된다.</td>
+      <td style="text-align: center">적용하기 쉽다.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">단점</td>
+      <td style="text-align: center">적용하기 어렵다.</td>
+      <td style="text-align: center">제품코드에 어노테이션을 추가해야한다.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">제품코드와 동기화가 안될수 있다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="3-spring-rest-docs-작성-방법">3. Spring Rest Docs 작성 방법</h2>
+
+<ul>
+  <li>
+    <p>개발 환경</p>
+
+    <ul>
+      <li>Spring Boot 2.4.6</li>
+      <li>Gradle 6.9</li>
+      <li>JUnit5</li>
+      <li>MockMvc</li>
+      <li>AsciiDoc</li>
+    </ul>
+  </li>
+  <li>
+    <p>./build.gradle</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  plugins {
+      id "org.springframework.boot" version "2.4.6"
+      id "io.spring.dependency-management" version "1.0.11.RELEASE"
+      id "org.asciidoctor.convert" version "1.5.3" // (1)
+      id "java"
+  }
+
+  group = "kr.co.rest.doc"
+  version = "0.0.1-SNAPSHOT"
+  sourceCompatibility = "11"
+
+  configurations {
+      compileOnly {
+          extendsFrom annotationProcessor
+      }
+  }
+
+  configurations.all {
+      exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+      exclude group: "io.undertow", module: "undertow-websockets-jsr"
+  }
+
+  repositories {
+      mavenCentral()
+  }
+
+  ext {
+      snippetsDir = "build/generated-snippets"
+  }
+
+  asciidoctor {
+      dependsOn test // (2)
+  }
+
+  test {
+      outputs.dir snippetsDir
+      useJUnitPlatform()
+  }
+
+  asciidoctor {
+      "org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.3.RELEASE"
+  }
+
+  bootJar {
+      dependsOn asciidoctor // (3)
+      from("${asciidoctor.outputDir}/html5") { // (4)
+          into "BOOT-INF/classes/static/docs"
+      }
+  }
+
+  dependencies {
+      implementation "org.springframework.boot:spring-boot-starter-web"
+      implementation "org.springframework.boot:spring-boot-starter-undertow"
+      implementation "org.springframework.boot:spring-boot-starter-security"
+      implementation "org.springframework.boot:spring-boot-starter-validation"
+      implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+      implementation "org.springframework.security.oauth:spring-security-oauth2:2.5.0.RELEASE"
+      implementation "org.springframework.data:spring-data-envers"
+      implementation "com.navercorp.lucy:lucy-xss-servlet:2.0.0"
+      implementation "com.auth0:java-jwt:3.10.0"
+      implementation "org.springframework.restdocs:spring-restdocs-mockmvc"
+      implementation "org.springframework.restdocs:spring-restdocs-asciidoctor"
+
+      compileOnly "org.projectlombok:lombok"
+      compileOnly "com.querydsl:querydsl-apt"
+
+      runtimeOnly "org.mariadb.jdbc:mariadb-java-client:2.7.3"
+      runtimeOnly "com.h2database:h2"
+
+      annotationProcessor "org.projectlombok:lombok"
+      annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+      testImplementation "org.springframework.boot:spring-boot-starter-test" // (5)
+      testImplementation "org.springframework.security:spring-security-test"
+      testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc"
+  }
+</code></pre></div>    </div>
+
+    <ul>
+      <li>(1) AsciiDoc 파일을 컨버팅하고 build 디렉토리에 복사하기 위한 플러그인입니다.</li>
+      <li>(2) gradle build 시 test -&gt; asciidoctor 순으로 수행됩니다.</li>
+      <li>(3) gradle build 시 asciidoctor -&gt; bootJar 순으로 수행됩니다.</li>
+      <li>(4) gradle build 시 <strong>./build/asciidoc/html5/</strong> 에 html 파일이 생성 됩니다.<br />
+실제 배포시 BOOT-INF/classes 가 classpatch가 되기 때문에 아래와 같이 파일을 복사해야합니다.</li>
+      <li>(5) MockMvc 를 restdocs 에 사용할 수 있게 해주는 라이브러리입니다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>test/**/ApiDocumentationUtils</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ApiDocumentationUtils</span> <span class="o">{</span>
+    <span class="kd">static</span> <span class="nc">OperationRequestPreprocessor</span> <span class="nf">getDocumentRequest</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">preprocessRequest</span><span class="o">(</span>
+            <span class="n">modifyUris</span><span class="o">()</span> <span class="c1">// (1)</span>
+                <span class="o">.</span><span class="na">scheme</span><span class="o">(</span><span class="s">"https"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">host</span><span class="o">(</span><span class="s">"docs.api.com"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">removePort</span><span class="o">(),</span>
+            <span class="n">prettyPrint</span><span class="o">()</span> <span class="c1">// (2)</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">static</span> <span class="nc">OperationResponsePreprocessor</span> <span class="nf">getDocumentResponse</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">preprocessResponse</span><span class="o">(</span><span class="n">prettyPrint</span><span class="o">());</span> <span class="c1">// (3)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>(1) 문서상 uri 를 기본값인 http://localhost:8080 에서 https://docs.api.com 으로 변경하기 위해 사용합니다.</li>
+      <li>(2) 문서의 request 예쁘게 출력하기 위해 사용합니다.</li>
+      <li>(3) 문서의 response 를 예쁘게 출력하기 위해 사용합니다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>test/**/AccountControllerTest</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@AutoConfigureRestDocs</span> <span class="c1">// (1)</span>
+    <span class="nd">@SpringBootTest</span>
+    <span class="nd">@AutoConfigureMockMvc</span>
+    <span class="nd">@ExtendWith</span><span class="o">(</span><span class="nc">RestDocumentationExtension</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"junit"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">AccountControllerTest</span> <span class="o">{</span>
+
+        <span class="nd">@Autowired</span>
+        <span class="kd">private</span> <span class="nc">MockMvc</span> <span class="n">mockMvc</span><span class="o">;</span>
+
+        <span class="nd">@DisplayName</span><span class="o">(</span><span class="s">"Account 로그인"</span><span class="o">)</span>
+        <span class="nd">@Test</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loginAccount</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+
+            <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">loginForm</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+            <span class="n">loginForm</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"loginId"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">);</span>
+            <span class="n">loginForm</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span> <span class="s">"test2021@@"</span><span class="o">);</span>
+
+            <span class="nc">ResultActions</span> <span class="n">result</span> <span class="o">=</span> <span class="n">mockMvc</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="n">post</span><span class="o">(</span><span class="s">"/api/accounts/login"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">contentType</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">characterEncoding</span><span class="o">(</span><span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">.</span><span class="na">name</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">content</span><span class="o">(</span><span class="n">objectMapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">loginForm</span><span class="o">)));</span>
+
+            <span class="n">result</span><span class="o">.</span><span class="na">andExpect</span><span class="o">(</span><span class="n">status</span><span class="o">().</span><span class="na">isOk</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">andDo</span><span class="o">(</span><span class="n">document</span><span class="o">(</span><span class="s">"login-account"</span><span class="o">,</span> <span class="c1">// (2)</span>
+                    <span class="nc">ApiDocumentationUtils</span><span class="o">.</span><span class="na">getDocumentRequest</span><span class="o">(),</span>
+                    <span class="nc">ApiDocumentationUtils</span><span class="o">.</span><span class="na">getDocumentResponse</span><span class="o">(),</span>
+                    <span class="n">requestFields</span><span class="o">(</span>
+                        <span class="n">fieldWithPath</span><span class="o">(</span><span class="s">"loginId"</span><span class="o">).</span><span class="na">type</span><span class="o">(</span><span class="nc">JsonFieldType</span><span class="o">.</span><span class="na">STRING</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"로그인 ID"</span><span class="o">),</span>
+                        <span class="n">fieldWithPath</span><span class="o">(</span><span class="s">"password"</span><span class="o">).</span><span class="na">type</span><span class="o">(</span><span class="nc">JsonFieldType</span><span class="o">.</span><span class="na">STRING</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"로그인 비밀번호"</span><span class="o">)</span>
+                    <span class="o">),</span>
+                    <span class="n">responseFields</span><span class="o">(</span>
+                        <span class="n">fieldWithPath</span><span class="o">(</span><span class="s">"access_token"</span><span class="o">).</span><span class="na">type</span><span class="o">(</span><span class="nc">JsonFieldType</span><span class="o">.</span><span class="na">STRING</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"Access Token"</span><span class="o">),</span>
+                        <span class="n">fieldWithPath</span><span class="o">(</span><span class="s">"refresh_token"</span><span class="o">).</span><span class="na">type</span><span class="o">(</span><span class="nc">JsonFieldType</span><span class="o">.</span><span class="na">STRING</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"Refresh Token"</span><span class="o">)</span>
+                    <span class="o">)</span>
+                <span class="o">)</span>
+            <span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>(1) getDocumentRequest에 선언된 uri 와 동일 기능을 제공합니다. 아래의 우선순위가 적용됩니다.
+        <blockquote>
+          <ol>
+            <li>@AutoConfigureRestDocs 에 uri 정보가 선언되어있으면 적용하며, 없으면 2단계로</li>
+            <li>getDocumentRequest 에 uri 정보가 설정되어있으면 적용하며, 없으면 3단계로</li>
+            <li>기본 설정값 적용 (http://localhost:8080)</li>
+          </ol>
+        </blockquote>
+      </li>
+      <li>(2) test 수행 시 <strong>./build/grenerated-snippets/</strong> 하위에 지정한 문자열의 폴더 하위에 문서가 작성됩니다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Test 수행 시 결과</p>
+
+    <blockquote>
+      <p>그림 1. 폴더구조</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-1.png" alt="image_1" /></p>
+    </blockquote>
+
+    <blockquote>
+      <p>그림 2. http-request</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-2.png" alt="image_2" /></p>
+    </blockquote>
+
+    <blockquote>
+      <p>그림 3. http-response</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-3.png" alt="image_3" /></p>
+    </blockquote>
+
+    <blockquote>
+      <p>그림 4. request-fields</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-4.png" alt="image_4" /></p>
+    </blockquote>
+
+    <blockquote>
+      <p>그림 5. response-fields</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-5.png" alt="image_5" /></p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="4-기능-추가">4. 기능 추가</h2>
+
+<p>이 블로그를 참고하시고 진행하시는 개발자의 결과 페이지와 실제로 제가 올린 결과 페이지가 다를겁니다.<br />
+기본 결과 페이지 request-fileds, response-fileds 필드 값이 영어로 노출이 될겁니다.<br />
+필드 값을 한글로 표기 핳기 위해 request-fileds, response-fileds 에 대해 커스텀을 하였습니다.</p>
+
+<p>커스텀하여 사용하기 위해서는 <strong><span style="color: red;">/test/resources/org/springframework/restdocs/templates/asciidoctor/</span></strong><br />
+디텍토리를 생성 후 커스텀 하기 위한 파일.snippet 을 생성해줍니다.</p>
+
+<p>snippet 을 커스텀 하기 위한 기본 예제는 <a href="https://github.com/spring-projects/spring-restdocs/tree/main/spring-restdocs-core/src/main/resources/org/springframework/restdocs/templates/asciidoctor">링크</a> 참고해주세요.</p>
+
+<ol>
+  <li>
+    <p>필드값 한글화 변경 및 필수값 여부 추가</p>
+
+    <blockquote>
+      <p>그림 6. request-fileds.snippet</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-6.png" alt="image_6" /></p>
+    </blockquote>
+
+    <ul>
+      <li>실제 필수값 여부 적용 방법</li>
+    </ul>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="nd">@DisplayName</span><span class="o">(</span><span class="s">"Account 로그인"</span><span class="o">)</span>
+     <span class="nd">@Test</span>
+     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loginAccount</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+
+         <span class="o">...</span>
+         <span class="n">requestFields</span><span class="o">(</span>
+             <span class="n">fieldWithPath</span><span class="o">(</span><span class="s">"loginId"</span><span class="o">).</span><span class="na">type</span><span class="o">(</span><span class="nc">JsonFieldType</span><span class="o">.</span><span class="na">STRING</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"로그인 ID"</span><span class="o">),</span> <span class="c1">// optional 미사용시 필수값 optional 사용시 필수값 X</span>
+             <span class="n">fieldWithPath</span><span class="o">(</span><span class="s">"password"</span><span class="o">).</span><span class="na">type</span><span class="o">(</span><span class="nc">JsonFieldType</span><span class="o">.</span><span class="na">STRING</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"로그인 비밀번호"</span><span class="o">)</span>
+         <span class="o">),</span>
+         <span class="o">...</span>
+     <span class="o">}</span>
+</code></pre></div>    </div>
+
+    <blockquote>
+      <p>그림 7. response-fileds.snippet</p>
+    </blockquote>
+
+    <blockquote>
+      <p><img src="/images/spring/spring-rest-docs-image-7.png" alt="image_7" /></p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="5-adoc-파일-만들기">5. adoc 파일 만들기</h2>
+
+<p>test 가 성공했으면 ./buld/gnerated-snippets 디렉토리 안에 각각 test 단위로 디렉토리가 생성된 것을 확인할 수 있습니다.<br />
+API 명세서를 실제 화면으로 보여주기 위해선 adoc 파일을 생성해야 합니다.</p>
+
+<p>adoc 파일 경로는 <strong><span style="color: red;">/src/docs/asciidoc/</span></strong> 하위에 xxxxx.adoc 디렉토리를 생성합니다.</p>
+
+<p>실제로 grdale 환경과 maven 환경의 디렉토리 구조는 다릅니다!!</p>
+
+<ul>
+  <li>빌드 환경에 따른 aodc 경로</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Build Tool</th>
+      <th style="text-align: center">Source fiels</th>
+      <th style="text-align: center">Generated files</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Maven</td>
+      <td style="text-align: center">src/main/asciidoc/*.adoc</td>
+      <td style="text-align: center">target/generated-docs/*.html</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Gradle</td>
+      <td style="text-align: center">src/docs/asciidoc/*.adoc</td>
+      <td style="text-align: center">build/asciidoc/html5/*.html</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>
+    <p>adoc 파일</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ifndef::snippets[]
+  :snippets: ../../../build/generated-snippets
+  endif::[]
+  = Rest Docs Account API Document
+  :doctype: book
+  :toc: left
+  :sectnums:
+  :toclevels: 3
+  :source-highlighter: highlightjs
+
+  == Account
+  === Account 로그인
+  ==== 요청
+  include::{snippets}/login-account/http-request.adoc[]
+  include::{snippets}/login-account/request-fields.adoc[]
+  ==== 응답
+  include::{snippets}/login-account/http-response.adoc[]
+  include::{snippets}/login-account/response-fields.adoc[]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>URL 요청에 따른 API 명세 노출</p>
+  </li>
+</ul>
+
+<p><strong>WebMvcConfigurer</strong> 상속 받은 MvcConfig에서 static/docs 안에 저장 된 html 접근할 수 있도록 추가합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MvcConfig</span> <span class="kd">implements</span> <span class="nc">WebMvcConfigurer</span> <span class="o">{</span>
+
+        <span class="o">...</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addResourceHandlers</span><span class="o">(</span><span class="kd">final</span> <span class="nc">ResourceHandlerRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">registry</span><span class="o">.</span><span class="na">addResourceHandler</span><span class="o">(</span><span class="s">"/docs/**"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addResourceLocations</span><span class="o">(</span><span class="s">"classpath:/static/docs/"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>위와 같이 추가 후 <strong>http://localhost:8080/docs/adoc파일명.html</strong> 접속 시 API 명세서가 나오는 것을 확인할 수 있습니다.</p>
+
+<blockquote>
+  <p>그림 8. Spring Rest Docs 화면</p>
+</blockquote>
+
+<p><img src="/images/spring/spring-rest-docs-image-8.png" alt="image_8" /></p>
+
+<h2 id="참고자료">참고자료</h2>
+
+<p><a href="https://techblog.woowahan.com/2597/">Spring Rest Docs 적용</a></p>
+
+
+  
+    
+      <div class="post-tags-section">
+  <i class="post-tags-icon fas fa-tags"></i>
+  <ul class="post-tags"><li>
+        <a class="post-tag" href="/tags/#spring">spring</a></li><li>
+        <a class="post-tag" href="/tags/#java">java</a></li><li>
+        <a class="post-tag" href="/tags/#springrestdocs">springrestdocs</a></li></ul>
+</div>
+
+  
+
+  
+</article>
+
+
+
+</main>
+
+<footer class="footer"><small>
+    &copy; 2021 <a href="https://github.com/leejonghyun89/">JongHyun Lee</a>. All rights reserved.
+    Powered by <a href="https://jekyllrb.com/">Jekyll</a> & <a href="https://github.com/vszhub/not-pure-poole">Not Pure Poole</a>.
+  </small>
+</footer>
+</div>
+      <div class="sidebar-right pure-u-1 pure-u-md-1-4">
+</div>
+    </div>
+
+    <script async src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script><script>
+  function strip(str, remove) {
+    while (str.length > 0 && remove.indexOf(str.charAt(0)) != -1) {
+      str = str.substr(1);
+    }
+    while (str.length > 0 && remove.indexOf(str.charAt(str.length - 1)) != -1) {
+      str = str.substr(0, str.length - 1);
+    }
+    return str;
+  }
+
+  function scroll() {
+    console.log('scroll');
+    window.scrollTo({
+      left: 0, 
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
+    sessionStorage.removeItem('forceCheckScroll');
+  }
+
+  const forceCheckScroll = sessionStorage.getItem('forceCheckScroll') === 'true';
+  const checkScroll = strip(window.location.pathname, '/') !== strip('', '/');
+
+  if (forceCheckScroll || checkScroll) {
+    const maxWidth = "(max-width: 48rem)";
+    const result = window.matchMedia(maxWidth);
+    if (result.matches) {
+      scroll();
+    } else {
+      result.addListener((match) => {
+        if (match.media == maxWidth) {
+          if (match.matches) {
+            scroll();
+          }
+        }
+      });
+    }
+  }
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

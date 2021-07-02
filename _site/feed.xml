@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-07-02T16:54:04+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">개발 블로그 기록용</title><subtitle>쉽게 잊어버리는 문제해결 방안과 새로운 기술... &lt;br /&gt;잊어버리기전에 기록하자...</subtitle><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><entry><title type="html">Spring Rest Docs 적용기</title><link href="http://localhost:4000/2021/07/01/spring-rest-docs/" rel="alternate" type="text/html" title="Spring Rest Docs 적용기" /><published>2021-07-01T00:00:00+09:00</published><updated>2021-07-01T00:00:00+09:00</updated><id>http://localhost:4000/2021/07/01/spring-rest-docs</id><content type="html" xml:base="http://localhost:4000/2021/07/01/spring-rest-docs/">&lt;h2 id=&quot;1-spring-rest-docs-도입-이유&quot;&gt;1. Spring Rest Docs 도입 이유&lt;/h2&gt;
+
+&lt;p&gt;지금까지 개발을 진행하면서 API 명세에 대한 정보 문서화 또는 Swagger 사용을 해왔습니다.&lt;br /&gt;
+매번 API 개발을 할 때마다 명세에 대한 정보를 문서화를 하였고,&lt;br /&gt;
+Swagger 사용을 위해 매번 Controller, Dto 단에 Swagger 어노테이션을 추가해야 하니&lt;br /&gt;
+코드 보기가 좋지 않았습니다.&lt;/p&gt;
+
+&lt;p&gt;그러다가 API 명세서를 자동화해주는 것을 찾다가 Spring Rest Docs 찾게 되어,&lt;br /&gt;
+Spring Rest Docs를 적용하게 되었습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-spring-rest-docs와-swagger-장단점&quot;&gt;2. Spring Rest Docs와 Swagger 장단점&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Spring Rest Docs&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Swagger&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;장점&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;제품코드에 영향이 없다.&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;API 테스트 해 볼수 있는 화면을 제공한다&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;테스트 케이스가 성공해야 문서 작성이 된다.&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;적용하기 쉽다.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;단점&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;적용하기 어렵다.&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;제품코드에 어노테이션을 추가해야한다.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;제품코드와 동기화가 안될수 있다.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;3-spring-rest-docs-작성-방법&quot;&gt;3. Spring Rest Docs 작성 방법&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;개발 환경&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Spring Boot 2.4.6&lt;/li&gt;
+      &lt;li&gt;Gradle 6.9&lt;/li&gt;
+      &lt;li&gt;JUnit5&lt;/li&gt;
+      &lt;li&gt;MockMvc&lt;/li&gt;
+      &lt;li&gt;AsciiDoc&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;./build.gradle&lt;/p&gt;
+
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  plugins {
+      id &quot;org.springframework.boot&quot; version &quot;2.4.6&quot;
+      id &quot;io.spring.dependency-management&quot; version &quot;1.0.11.RELEASE&quot;
+      id &quot;org.asciidoctor.convert&quot; version &quot;1.5.3&quot; // (1)
+      id &quot;java&quot;
+  }
+
+  group = &quot;kr.co.rest.doc&quot;
+  version = &quot;0.0.1-SNAPSHOT&quot;
+  sourceCompatibility = &quot;11&quot;
+
+  configurations {
+      compileOnly {
+          extendsFrom annotationProcessor
+      }
+  }
+
+  configurations.all {
+      exclude group: &quot;org.springframework.boot&quot;, module: &quot;spring-boot-starter-tomcat&quot;
+      exclude group: &quot;io.undertow&quot;, module: &quot;undertow-websockets-jsr&quot;
+  }
+
+  repositories {
+      mavenCentral()
+  }
+
+  ext {
+      snippetsDir = &quot;build/generated-snippets&quot;
+  }
+
+  asciidoctor {
+      dependsOn test // (2)
+  }
+
+  test {
+      outputs.dir snippetsDir
+      useJUnitPlatform()
+  }
+
+  asciidoctor {
+      &quot;org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.3.RELEASE&quot;
+  }
+
+  bootJar {
+      dependsOn asciidoctor // (3)
+      from(&quot;${asciidoctor.outputDir}/html5&quot;) { // (4)
+          into &quot;BOOT-INF/classes/static/docs&quot;
+      }
+  }
+
+  dependencies {
+      implementation &quot;org.springframework.boot:spring-boot-starter-web&quot;
+      implementation &quot;org.springframework.boot:spring-boot-starter-undertow&quot;
+      implementation &quot;org.springframework.boot:spring-boot-starter-security&quot;
+      implementation &quot;org.springframework.boot:spring-boot-starter-validation&quot;
+      implementation &quot;org.springframework.boot:spring-boot-starter-data-jpa&quot;
+      implementation &quot;org.springframework.security.oauth:spring-security-oauth2:2.5.0.RELEASE&quot;
+      implementation &quot;org.springframework.data:spring-data-envers&quot;
+      implementation &quot;com.navercorp.lucy:lucy-xss-servlet:2.0.0&quot;
+      implementation &quot;com.auth0:java-jwt:3.10.0&quot;
+      implementation &quot;org.springframework.restdocs:spring-restdocs-mockmvc&quot;
+      implementation &quot;org.springframework.restdocs:spring-restdocs-asciidoctor&quot;
+
+      compileOnly &quot;org.projectlombok:lombok&quot;
+      compileOnly &quot;com.querydsl:querydsl-apt&quot;
+
+      runtimeOnly &quot;org.mariadb.jdbc:mariadb-java-client:2.7.3&quot;
+      runtimeOnly &quot;com.h2database:h2&quot;
+
+      annotationProcessor &quot;org.projectlombok:lombok&quot;
+      annotationProcessor &quot;org.springframework.boot:spring-boot-configuration-processor&quot;
+
+      testImplementation &quot;org.springframework.boot:spring-boot-starter-test&quot; // (5)
+      testImplementation &quot;org.springframework.security:spring-security-test&quot;
+      testImplementation &quot;org.springframework.restdocs:spring-restdocs-mockmvc&quot;
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;(1) AsciiDoc 파일을 컨버팅하고 build 디렉토리에 복사하기 위한 플러그인입니다.&lt;/li&gt;
+      &lt;li&gt;(2) gradle build 시 test -&amp;gt; asciidoctor 순으로 수행됩니다.&lt;/li&gt;
+      &lt;li&gt;(3) gradle build 시 asciidoctor -&amp;gt; bootJar 순으로 수행됩니다.&lt;/li&gt;
+      &lt;li&gt;(4) gradle build 시 &lt;strong&gt;./build/asciidoc/html5/&lt;/strong&gt; 에 html 파일이 생성 됩니다.&lt;br /&gt;
+실제 배포시 BOOT-INF/classes 가 classpatch가 되기 때문에 아래와 같이 파일을 복사해야합니다.&lt;/li&gt;
+      &lt;li&gt;(5) MockMvc 를 restdocs 에 사용할 수 있게 해주는 라이브러리입니다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;test/**/ApiDocumentationUtils&lt;/p&gt;
+
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApiDocumentationUtils&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OperationRequestPreprocessor&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getDocumentRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;preprocessRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;modifyUris&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// (1)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;docs.api.com&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;removePort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;prettyPrint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// (2)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OperationResponsePreprocessor&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getDocumentResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;preprocessResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prettyPrint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// (3)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;(1) 문서상 uri 를 기본값인 http://localhost:8080 에서 https://docs.api.com 으로 변경하기 위해 사용합니다.&lt;/li&gt;
+      &lt;li&gt;(2) 문서의 request 예쁘게 출력하기 위해 사용합니다.&lt;/li&gt;
+      &lt;li&gt;(3) 문서의 response 를 예쁘게 출력하기 위해 사용합니다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;test/**/AccountControllerTest&lt;/p&gt;
+
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nd&quot;&gt;@AutoConfigureRestDocs&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// (1)&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@SpringBootTest&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@AutoConfigureMockMvc&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@ExtendWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RestDocumentationExtension&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@ActiveProfiles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;junit&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AccountControllerTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MockMvc&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mockMvc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;nd&quot;&gt;@DisplayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Account 로그인&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;loginAccount&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+            &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loginForm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;loginForm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;loginId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;loginForm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;test2021@@&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;nc&quot;&gt;ResultActions&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mockMvc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;perform&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/api/accounts/login&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MediaType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;APPLICATION_JSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MediaType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;APPLICATION_JSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;characterEncoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;UTF_8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objectMapper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;writeValueAsString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loginForm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)));&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;andExpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isOk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;andDo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;login-account&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// (2)&lt;/span&gt;
+                    &lt;span class=&quot;nc&quot;&gt;ApiDocumentationUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getDocumentRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt;
+                    &lt;span class=&quot;nc&quot;&gt;ApiDocumentationUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getDocumentResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;requestFields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;fieldWithPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;loginId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JsonFieldType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STRING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;로그인 ID&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;fieldWithPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JsonFieldType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STRING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;로그인 비밀번호&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;responseFields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;fieldWithPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;access_token&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JsonFieldType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STRING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Access Token&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;fieldWithPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;refresh_token&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JsonFieldType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STRING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Refresh Token&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;(1) getDocumentRequest에 선언된 uri 와 동일 기능을 제공합니다. 아래의 우선순위가 적용됩니다.
+        &lt;blockquote&gt;
+          &lt;ol&gt;
+            &lt;li&gt;@AutoConfigureRestDocs 에 uri 정보가 선언되어있으면 적용하며, 없으면 2단계로&lt;/li&gt;
+            &lt;li&gt;getDocumentRequest 에 uri 정보가 설정되어있으면 적용하며, 없으면 3단계로&lt;/li&gt;
+            &lt;li&gt;기본 설정값 적용 (http://localhost:8080)&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;(2) test 수행 시 &lt;strong&gt;./build/grenerated-snippets/&lt;/strong&gt; 하위에 지정한 문자열의 폴더 하위에 문서가 작성됩니다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Test 수행 시 결과&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 1. 폴더구조&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-1.png&quot; alt=&quot;image_1&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 2. http-request&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-2.png&quot; alt=&quot;image_2&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 3. http-response&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-3.png&quot; alt=&quot;image_3&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 4. request-fields&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-4.png&quot; alt=&quot;image_4&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 5. response-fields&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-5.png&quot; alt=&quot;image_5&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;4-기능-추가&quot;&gt;4. 기능 추가&lt;/h2&gt;
+
+&lt;p&gt;이 블로그를 참고하시고 진행하시는 개발자의 결과 페이지와 실제로 제가 올린 결과 페이지가 다를겁니다.&lt;br /&gt;
+기본 결과 페이지 request-fileds, response-fileds 필드 값이 영어로 노출이 될겁니다.&lt;br /&gt;
+필드 값을 한글로 표기 핳기 위해 request-fileds, response-fileds 에 대해 커스텀을 하였습니다.&lt;/p&gt;
+
+&lt;p&gt;커스텀하여 사용하기 위해서는 &lt;strong&gt;&lt;span style=&quot;color: red;&quot;&gt;/test/resources/org/springframework/restdocs/templates/asciidoctor/&lt;/span&gt;&lt;/strong&gt;&lt;br /&gt;
+디텍토리를 생성 후 커스텀 하기 위한 파일.snippet 을 생성해줍니다.&lt;/p&gt;
+
+&lt;p&gt;snippet 을 커스텀 하기 위한 기본 예제는 &lt;a href=&quot;https://github.com/spring-projects/spring-restdocs/tree/main/spring-restdocs-core/src/main/resources/org/springframework/restdocs/templates/asciidoctor&quot;&gt;링크&lt;/a&gt; 참고해주세요.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;필드값 한글화 변경 및 필수값 여부 추가&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 6. request-fileds.snippet&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-6.png&quot; alt=&quot;image_6&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;실제 필수값 여부 적용 방법&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &lt;span class=&quot;nd&quot;&gt;@DisplayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Account 로그인&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+     &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+     &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;loginAccount&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;requestFields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;fieldWithPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;loginId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JsonFieldType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STRING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;로그인 ID&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// optional 미사용시 필수값 optional 사용시 필수값 X&lt;/span&gt;
+             &lt;span class=&quot;n&quot;&gt;fieldWithPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JsonFieldType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STRING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;로그인 비밀번호&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;그림 7. response-fileds.snippet&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-7.png&quot; alt=&quot;image_7&quot; /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;5-adoc-파일-만들기&quot;&gt;5. adoc 파일 만들기&lt;/h2&gt;
+
+&lt;p&gt;test 가 성공했으면 ./buld/gnerated-snippets 디렉토리 안에 각각 test 단위로 디렉토리가 생성된 것을 확인할 수 있습니다.&lt;br /&gt;
+API 명세서를 실제 화면으로 보여주기 위해선 adoc 파일을 생성해야 합니다.&lt;/p&gt;
+
+&lt;p&gt;adoc 파일 경로는 &lt;strong&gt;&lt;span style=&quot;color: red;&quot;&gt;/src/docs/asciidoc/&lt;/span&gt;&lt;/strong&gt; 하위에 xxxxx.adoc 디렉토리를 생성합니다.&lt;/p&gt;
+
+&lt;p&gt;실제로 grdale 환경과 maven 환경의 디렉토리 구조는 다릅니다!!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;빌드 환경에 따른 aodc 경로&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Build Tool&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Source fiels&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Generated files&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Maven&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;src/main/asciidoc/*.adoc&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;target/generated-docs/*.html&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Gradle&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;src/docs/asciidoc/*.adoc&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;build/asciidoc/html5/*.html&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;adoc 파일&lt;/p&gt;
+
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ifndef::snippets[]
+  :snippets: ../../../build/generated-snippets
+  endif::[]
+  = Rest Docs Account API Document
+  :doctype: book
+  :toc: left
+  :sectnums:
+  :toclevels: 3
+  :source-highlighter: highlightjs
+
+  == Account
+  === Account 로그인
+  ==== 요청
+  include::{snippets}/login-account/http-request.adoc[]
+  include::{snippets}/login-account/request-fields.adoc[]
+  ==== 응답
+  include::{snippets}/login-account/http-response.adoc[]
+  include::{snippets}/login-account/response-fields.adoc[]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;URL 요청에 따른 API 명세 노출&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;WebMvcConfigurer&lt;/strong&gt; 상속 받은 MvcConfig에서 static/docs 안에 저장 된 html 접근할 수 있도록 추가합니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MvcConfig&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WebMvcConfigurer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+        &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;addResourceHandlers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ResourceHandlerRegistry&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addResourceHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/docs/**&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addResourceLocations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;classpath:/static/docs/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위와 같이 추가 후 &lt;strong&gt;http://localhost:8080/docs/adoc파일명.html&lt;/strong&gt; 접속 시 API 명세서가 나오는 것을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;그림 8. Spring Rest Docs 화면&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-8.png&quot; alt=&quot;image_8&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;참고자료&quot;&gt;참고자료&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://techblog.woowahan.com/2597/&quot;&gt;Spring Rest Docs 적용&lt;/a&gt;&lt;/p&gt;</content><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><category term="Spring," /><category term="Java," /><category term="SpringRestDocs" /><summary type="html">1. Spring Rest Docs 도입 이유</summary></entry></feed>
