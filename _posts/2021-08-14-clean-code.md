@@ -15,4 +15,4 @@ math: true
 
 ## 2. 목차
 
-- Step1. [깨끗한 코드](https://leejonghyun89.github.io/2021/08/14/Step1-Clean-Code/)
+- Step1. [깨끗한 코드](https://leejonghyun89.github.io/2021/08/14/step1-clean-code/)
