@@ -5,6 +5,17 @@ tags: Spring, Java, SpringRestDocs
 math: true
 ---
 
+## 목차
+
+- [Spring Rest Docs 도입 이유](#1)
+- [Spring Rest Docs와 Swagger 장단점](#2)
+- [Spring Rest Docs 작성 방법](#3)
+- [기능 추가](#4)
+- [adoc 파일 만들기](#5)
+- [참고자료](#6)
+
+<a name="1" />
+
 ## 1. Spring Rest Docs 도입 이유
 
 지금까지 개발을 진행하면서 API 명세에 대한 정보 문서화 또는 Swagger 사용을 해왔습니다.  
@@ -15,6 +26,8 @@ Swagger 사용을 위해 매번 Controller, Dto 단에 Swagger 어노테이션�
 그러다가 API 명세서를 자동화해주는 것을 찾다가 Spring Rest Docs 찾게 되어,  
 Spring Rest Docs를 적용하게 되었습니다.
 
+<a name="2" />
+
 ## 2. Spring Rest Docs와 Swagger 장단점
 
 |      |              Spring Rest Docs              |                 Swagger                 |
@@ -23,6 +36,8 @@ Spring Rest Docs를 적용하게 되었습니다.
 |      | 테스트 케이스가 성공해야 문서 작성이 된다. |             적용하기 쉽다.              |
 | 단점 |              적용하기 어렵다.              |  제품코드에 어노테이션을 추가해야한다.  |
 |      |                                            |    제품코드와 동기화가 안될수 있다.     |
+
+<a name="3" />
 
 ## 3. Spring Rest Docs 작성 방법
 
@@ -217,6 +232,8 @@ Spring Rest Docs를 적용하게 되었습니다.
 
   > ![image_5](/images/spring/spring-rest-docs-image-5.png)
 
+<a name="4" />
+
 ## 4. 기능 추가
 
 이 블로그를 참고하시고 진행하시는 개발자의 결과 페이지와 실제로 제가 올린 결과 페이지가 다를겁니다.  
@@ -253,6 +270,8 @@ snippet 을 커스텀 하기 위한 기본 예제는 [링크](https://github.com
    > 그림 7. response-fileds.snippet
 
    > ![image_7](/images/spring/spring-rest-docs-image-7.png)
+
+<a name="5" />
 
 ## 5. adoc 파일 만들기
 
@@ -313,6 +332,8 @@ adoc 파일 경로는 **<span style="color: red;">/src/docs/asciidoc/</span>** �
 > 그림 8. Spring Rest Docs 화면
 
 ![image_8](/images/spring/spring-rest-docs-image-8.png)
+
+<a name="6" />
 
 ## 참고자료
 

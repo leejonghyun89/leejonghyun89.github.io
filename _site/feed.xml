@@ -1,4 +1,327 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-07-02T16:58:38+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">개발 블로그 기록용</title><subtitle>쉽게 잊어버리는 문제해결 방안과 새로운 기술... &lt;br /&gt;잊어버리기전에 기록하자...</subtitle><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><entry><title type="html">Spring Rest Docs 적용기</title><link href="http://localhost:4000/2021/07/01/spring-rest-docs/" rel="alternate" type="text/html" title="Spring Rest Docs 적용기" /><published>2021-07-01T00:00:00+09:00</published><updated>2021-07-01T00:00:00+09:00</updated><id>http://localhost:4000/2021/07/01/spring-rest-docs</id><content type="html" xml:base="http://localhost:4000/2021/07/01/spring-rest-docs/">&lt;h2 id=&quot;1-spring-rest-docs-도입-이유&quot;&gt;1. Spring Rest Docs 도입 이유&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-08-14T17:47:26+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">개발 블로그 기록용</title><subtitle>쉽게 잊어버리는 문제해결 방안과 새로운 기술... &lt;br /&gt;잊어버리기전에 기록하자...</subtitle><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><entry><title type="html">Clean Code</title><link href="http://localhost:4000/2021/08/14/clean-code/" rel="alternate" type="text/html" title="Clean Code" /><published>2021-08-14T00:00:00+09:00</published><updated>2021-08-14T00:00:00+09:00</updated><id>http://localhost:4000/2021/08/14/clean-code</id><content type="html" xml:base="http://localhost:4000/2021/08/14/clean-code/">&lt;h2 id=&quot;1-clean-code-블로그-작성-이유&quot;&gt;1. Clean Code 블로그 작성 이유&lt;/h2&gt;
+
+&lt;p&gt;어느덧 개발을 한지 6년정도의 시간이 흐르게 되었습니다.&lt;br /&gt;
+어느 순간부터 내가 작성한 코드들이 정확하게 작성하고 있는지에 대한 의문이 들었습니다.&lt;/p&gt;
+
+&lt;p&gt;많은 서적을 찾아보다가 클린코드-애자일 소프트웨어 장인 정신이라는 서적을 찾게 되어&lt;br /&gt;
+그 책을 읽고 각 목차 별로 느낀점을 기록하고자 작성하게 되었습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-목차&quot;&gt;2. 목차&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Step1. &lt;a href=&quot;https://leejonghyun89.github.io/2021/08/14/Step1-Clean-Code/&quot;&gt;깨끗한 코드&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><category term="CleanCode," /><category term="Clean," /><category term="Code" /><summary type="html">1. Clean Code 블로그 작성 이유</summary></entry><entry><title type="html">Step1. 깨끗한 코드</title><link href="http://localhost:4000/2021/08/14/step1-clean-code/" rel="alternate" type="text/html" title="Step1. 깨끗한 코드" /><published>2021-08-14T00:00:00+09:00</published><updated>2021-08-14T00:00:00+09:00</updated><id>http://localhost:4000/2021/08/14/step1-clean-code</id><content type="html" xml:base="http://localhost:4000/2021/08/14/step1-clean-code/">&lt;blockquote&gt;
+  &lt;p&gt;여러분이 이책을 읽고 있다면 이유는 두 가지다.&lt;br /&gt;
+첫째, 프로그래머라서&lt;br /&gt;
+둘째, 더 나은 프로그래머가 되기 위해서&lt;br /&gt;
+그렇다면 다행이다. 울 업계는 더 나은 프로그래머가 필요하기 때문이다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;목차&quot;&gt;목차&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;코드가 존재하리라&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;나쁜코드&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;나쁜 코드로 치르는 대가&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#4&quot;&gt;원대한 재설계의 꿈&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#5&quot;&gt;태도&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#6&quot;&gt;원초적 난재&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#7&quot;&gt;깨끗한 코드라는 예술?&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#8&quot;&gt;깨끗한 코드란?&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#9&quot;&gt;비야네 스트롭스트롭&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#10&quot;&gt;그래디 부치&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#11&quot;&gt;큰 데이브 토마스&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#12&quot;&gt;마이클 페더스&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#13&quot;&gt;론 제프리스&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#14&quot;&gt;워드 커닝햄&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#15&quot;&gt;우리는 저자다&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#16&quot;&gt;보이스카우트 규칙&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#17&quot;&gt;프리퀄과 원칙&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#18&quot;&gt;정리&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#19&quot;&gt;출저 및 참고문헌&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;1&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;코드가-존재하리라&quot;&gt;코드가 존재하리라&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;코드를 다루는 책은 시대에 뒤떨어지는 주제이고, 명세 기준으로 프로그램이 자동으로 생성되는 것은 틀렸다.
+    &lt;ul&gt;
+      &lt;li&gt;앞으로 코드가 사라질 가망은 전혀 없다. 이유는 코드는 요구사항을 상세히 표한하는 수단이라서!!&lt;/li&gt;
+      &lt;li&gt;앞으로 프로그래밍 언어에서 추상화 수준은 점차 높아질 것이다.&lt;/li&gt;
+      &lt;li&gt;코드로 추상화된 언어나 특정 응용 분야 언어로 기술하는 명세 역시 코드이다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;2&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;나쁜코드&quot;&gt;나쁜코드&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;어느 한 업체가 킬러 앱(Killer App) 하나를 구현하였다.
+    &lt;ul&gt;
+      &lt;li&gt;하지만 해당 앱을 만든 업체는 망하게 되었다.&lt;/li&gt;
+      &lt;li&gt;그 이유는 출시에 바빠서 코드를 마구 구현하였다고 한다.&lt;/li&gt;
+      &lt;li&gt;결국 회사가 망한 원인은 바로 나쁜 코드 때문이였다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;우리 모두 가 자신이 짠 쓰레기 코드를 쳐다보며 나중에 손보겠다고 생각하고 그냥 넘어가는데,&lt;br /&gt;
+결국 그 시간은 돌아오지 않는다. (르블랑의 법칙)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;3&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;나쁜-코드로-치르는-대가&quot;&gt;나쁜 코드로 치르는 대가&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;나쁜 코드가 쌓일수록 팀 생산성이 떨어진다&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;생산성이 떨어지기 때문에 관리층은 나름 복구를 시도하기 위해 새로운 인력을 투입한다.&lt;/li&gt;
+      &lt;li&gt;새 인력팀은 생산성을 높여야 한다는 극심한 압력에 시달리고, 결국은 나쁜 코드를 더 많이 양상한다.&lt;/li&gt;
+      &lt;li&gt;결국엔 생산성은 더더욱 떨어져 거의 0이 된다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;4&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;원대한-재설계의-꿈&quot;&gt;원대한 재설계의 꿈&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;혐오스러운 코드로는 더 이상 일하지 못하겠다며 관리층에게 재설계를 요구한다.&lt;/li&gt;
+  &lt;li&gt;새로운 타이거 팀이 구성된다.&lt;/li&gt;
+  &lt;li&gt;가장 유능하고 똑똑한 사람들만 타이커 티임으로 차출되고, 나머지는 계속에서 현재 시스템을 유지보수 한다.&lt;/li&gt;
+  &lt;li&gt;두 팀이 경주를 시작하는데, 타이거 팀은 기존 시스템 기능을 모두 제공하는 새 시스템을 내놓아야 하며,&lt;br /&gt;
+또한 그동안 기존 시스템에 가해지는 변경도 모두 따라 잡야아한다.&lt;/li&gt;
+  &lt;li&gt;새 시스템이 기존 시스템을 따라잡을 즈음이면 초창기 타이거 팀원들은 모두 팀을 떠났고 새로운 팀원들이 새 시스템을 설계하자고 나선다.&lt;/li&gt;
+  &lt;li&gt;그 이유는, 현재 시스템이 너무 엉망이라서…&lt;/li&gt;
+  &lt;li&gt;깨끗한 코드를 만드는 노력이 비용을 절감하는 방법일 뿐만 아니라 전문가로서 살아남는 길이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;5&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;태도&quot;&gt;태도&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;코드가 엉망이라서 몇 시간으로 예상한 업무가 몇 주로 늘어진 경험이 있는가?&lt;/li&gt;
+  &lt;li&gt;우리는 한 줄만 고치면 되리라 예상했던 것이 모듈을 수백개 건드린 경험이 있는가?&lt;/li&gt;
+  &lt;li&gt;어째서 좋은 코드가 한 순간에 나쁜 코드로 전략해버린걸까?
+    &lt;ul&gt;
+      &lt;li&gt;설계를 뒤집는 방향으로 요구사항이 변했다!&lt;/li&gt;
+      &lt;li&gt;일정이 촉박해서 제대로 하지 못했다!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;위와 같은 변명 불문하고 결국엔 우리 프로그래머의 잘못이 크다…&lt;/li&gt;
+  &lt;li&gt;무조건!! 우리는 좋은 코드를 사수해야만 한다!!&lt;/li&gt;
+  &lt;li&gt;또한 나쁜 코드의 위험을 이해하지 못하는 관리자의 말을 그대로 따르는 행동은 전문가답지 못하다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;6&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;원초적-난재&quot;&gt;원초적 난재&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;나쁜 코드를 양산하면 기한을 맞추지 못한다.&lt;/li&gt;
+  &lt;li&gt;기한을 맞추는 유일한 방법은, 언제나 코드를 최대한 깨끗하게 유지하는 습관이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;7&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;깨끗한-코드라는-예술&quot;&gt;깨끗한 코드라는 예술?&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;깨끗한 코드를 구현하는 행위는 그림을 그리는 행위와 비슷하다.&lt;/li&gt;
+  &lt;li&gt;깨끗한 코드를 작성하려면 ‘청결’이라는 힘겹게 습득한 감각을 활용해 자잘한 기법들을 적용하는 절제와 규율이 필요하다.&lt;/li&gt;
+  &lt;li&gt;나쁜 모듈을 보면 좋은 모듈로 개선할 방안을 떠올려야한다.&lt;/li&gt;
+  &lt;li&gt;깨끗한 코드를 작성하는 프로그래머는 빈 캔퍼스를 우아한 작품으로 바꿔가는 화가와 같다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;8&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;깨끗한-코드란&quot;&gt;깨끗한 코드란?&lt;/h2&gt;
+
+&lt;p&gt;&lt;a name=&quot;9&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;비야네 스트롭스트롭&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;우하하고 효율적인 코드를 좋아한다.&lt;/li&gt;
+    &lt;li&gt;철저한 오류 처리가 필요하다.&lt;/li&gt;
+    &lt;li&gt;논리가 간단해야 버그가 숨어들지 못한다.&lt;/li&gt;
+    &lt;li&gt;의존성을 최대한 줄여야 유지보수가 쉬워진다.&lt;/li&gt;
+    &lt;li&gt;깨끗한 코드는 한가지를 제대로 한다.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name=&quot;10&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;그래디 부치&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;단순하고 직접적이다.&lt;/li&gt;
+    &lt;li&gt;잘 쓴 문장처럼 읽힌다.&lt;/li&gt;
+    &lt;li&gt;설계자의 의도를 숨기지 않는다.&lt;/li&gt;
+    &lt;li&gt;명쾌한 추상화와 단순한 제어문으로 가득하다.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name=&quot;11&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;큰 데이브 토마스&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;작성자가 아닌 사람도 읽기 쉽고 고치기 쉬워야한다.&lt;/li&gt;
+    &lt;li&gt;단위 테스트 케이스와 인수 테스트 케이스가 존재한다. (테스트 케이스가 없는 코드는 깨끗한 코드가 아니다.)&lt;/li&gt;
+    &lt;li&gt;의미 있는 이름이 붙는다.&lt;/li&gt;
+    &lt;li&gt;의존성은 최소이며 각 의존성을 명확히 정의한다.&lt;/li&gt;
+    &lt;li&gt;API는 명확하며 최소로 줄인다.&lt;/li&gt;
+    &lt;li&gt;언어에 따라 필요한 모든 정보를 코드만으로 명확히 표현할 수 없기에 코드는 문학적으로 표현해야 마땅하다.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name=&quot;12&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;마이클 페더스&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;모두를 아우르는 특징이 있다.&lt;/li&gt;
+    &lt;li&gt;누군가 주의 깊게 짰다는 느낌을 준다.&lt;/li&gt;
+    &lt;li&gt;고치려고 살펴봐도 딱히 손 댈 곳이 없다.&lt;/li&gt;
+    &lt;li&gt;누군가 남겨준 코드, 누군가 주의 깊게 짜놓은 작품에 감사를 느낀다.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name=&quot;13&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;론 제프리스&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;모든 테스트를 통과한다.&lt;/li&gt;
+    &lt;li&gt;중복이 없다.&lt;/li&gt;
+    &lt;li&gt;시스템 내 모든 설계 아이디어를 표현한다.&lt;/li&gt;
+    &lt;li&gt;클래스, 메서드, 함수 등을 최대한 줄인다.&lt;/li&gt;
+    &lt;li&gt;메서드 추출 리펙터링 기법&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name=&quot;14&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;워드 커닝햄&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;짐작했던 기능을 각 루틴이 그대로 수행하다면 깨끗한 코드다.&lt;br /&gt;
+그 문제를 풀기 위한 언어처럼 모인다면 아름다운 코드다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name=&quot;15&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;우리는-저자다&quot;&gt;우리는 저자다&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;밥이 모듈을 입력한다.
+변경할 함수로 스크롤해 내려간다.
+잠시 멈추고 생각한다.
+이런! 모듈 상단으로 스크롤해 변수 초기화를 확인한다.
+다시 내려와 입력하기 시작한다.
+이런, 입력을 지운다!
+다시 입력한다!
+다시 지운다!
+뭔가를 절반쯤 입력하다가 또 지운다!
+지금 바꾸려는 함수를 호출하는 함수로 스크롤한 후 함수가 호출되는 방식을 살펴본다.
+다시 돌아와 방금 지운 코드를 입력한다.
+잠시 멈춘다.
+코드를 다시 지운다.
+다른 윈도를 열어 하위 클래스를 살핀다. 함수가 재정의되어있는가?
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;실제 코드를 짜는 시간보다 코드를 읽는 시간의 비율이 훨씬 크다.&lt;/li&gt;
+  &lt;li&gt;주변 코드가 읽기 쉬우면 새 코드를 짜기도 쉽다.&lt;/li&gt;
+  &lt;li&gt;서둘러 끝내려면, 쉽게 짜려면, 읽기 쉽게 만들어라.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;16&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;보이스카우트-규칙&quot;&gt;보이스카우트 규칙&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;체크아웃할 떄보다 좀 더 깨끗한 코드를 체크인한다면 코드는 절대 나빠지지 않는다.&lt;/li&gt;
+  &lt;li&gt;변수 이름을 하나를 개선하고, 조금 긴 함수 하나를 분할하고, 약간의 중복을 제거하고, 복잡한 if문 하나를 정리하면 충분하다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;17&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;프리퀄과-원칙&quot;&gt;프리퀄과 원칙&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SRP : 클래스에는 한 가지, 단 한가지 변경 이유만 존재해야 한다.&lt;/li&gt;
+  &lt;li&gt;OCP : 클래스는 확장에 열려 있여야 하며, 변경에는 닫혀 있어야 한다.&lt;/li&gt;
+  &lt;li&gt;LSP : 상속받은 클래스는 기초 클래스를 대체할 수 있어야 한다.&lt;/li&gt;
+  &lt;li&gt;DIP : 추상화에 의존해야 하며, 구체와에 의존하면 안 된다.&lt;/li&gt;
+  &lt;li&gt;ISP : 클라이언트에 밀접하게 작게 쪼개진 인터페이스를 유지한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;18&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;정리&quot;&gt;정리&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;깨끗한 코드를 만들기 위해선!! 연습!! 연습만이 살길이다!!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;19&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;출저-및-참고문헌&quot;&gt;출저 및 참고문헌&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;클린코드 (애자일 소프트웨어 장인 정신)&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><category term="CleanCode," /><category term="Clean," /><category term="Code" /><summary type="html">여러분이 이책을 읽고 있다면 이유는 두 가지다. 첫째, 프로그래머라서 둘째, 더 나은 프로그래머가 되기 위해서 그렇다면 다행이다. 울 업계는 더 나은 프로그래머가 필요하기 때문이다.</summary></entry><entry><title type="html">Spring Rest Docs 적용기</title><link href="http://localhost:4000/2021/07/01/spring-rest-docs/" rel="alternate" type="text/html" title="Spring Rest Docs 적용기" /><published>2021-07-01T00:00:00+09:00</published><updated>2021-07-01T00:00:00+09:00</updated><id>http://localhost:4000/2021/07/01/spring-rest-docs</id><content type="html" xml:base="http://localhost:4000/2021/07/01/spring-rest-docs/">&lt;h2 id=&quot;목차&quot;&gt;목차&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#1&quot;&gt;Spring Rest Docs 도입 이유&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2&quot;&gt;Spring Rest Docs와 Swagger 장단점&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3&quot;&gt;Spring Rest Docs 작성 방법&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4&quot;&gt;기능 추가&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5&quot;&gt;adoc 파일 만들기&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#6&quot;&gt;참고자료&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a name=&quot;1&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-spring-rest-docs-도입-이유&quot;&gt;1. Spring Rest Docs 도입 이유&lt;/h2&gt;
 
 &lt;p&gt;지금까지 개발을 진행하면서 API 명세에 대한 정보 문서화 또는 Swagger 사용을 해왔습니다.&lt;br /&gt;
 매번 API 개발을 할 때마다 명세에 대한 정보를 문서화를 하였고,&lt;br /&gt;
@@ -7,6 +330,8 @@ Swagger 사용을 위해 매번 Controller, Dto 단에 Swagger 어노테이션�
 
 &lt;p&gt;그러다가 API 명세서를 자동화해주는 것을 찾다가 Spring Rest Docs 찾게 되어,&lt;br /&gt;
 Spring Rest Docs를 적용하게 되었습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;2&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;2-spring-rest-docs와-swagger-장단점&quot;&gt;2. Spring Rest Docs와 Swagger 장단점&lt;/h2&gt;
 
@@ -41,6 +366,8 @@ Spring Rest Docs를 적용하게 되었습니다.&lt;/p&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
+
+&lt;p&gt;&lt;a name=&quot;3&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;3-spring-rest-docs-작성-방법&quot;&gt;3. Spring Rest Docs 작성 방법&lt;/h2&gt;
 
@@ -275,6 +602,8 @@ Spring Rest Docs를 적용하게 되었습니다.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;p&gt;&lt;a name=&quot;4&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;4-기능-추가&quot;&gt;4. 기능 추가&lt;/h2&gt;
 
 &lt;p&gt;이 블로그를 참고하시고 진행하시는 개발자의 결과 페이지와 실제로 제가 올린 결과 페이지가 다를겁니다.&lt;br /&gt;
@@ -324,6 +653,8 @@ Spring Rest Docs를 적용하게 되었습니다.&lt;/p&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;&lt;a name=&quot;5&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;5-adoc-파일-만들기&quot;&gt;5. adoc 파일 만들기&lt;/h2&gt;
 
@@ -411,6 +742,8 @@ API 명세서를 실제 화면으로 보여주기 위해선 adoc 파일을 생�
 
 &lt;p&gt;&lt;img src=&quot;/images/spring/spring-rest-docs-image-8.png&quot; alt=&quot;image_8&quot; /&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;a name=&quot;6&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;참고자료&quot;&gt;참고자료&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://techblog.woowahan.com/2597/&quot;&gt;Spring Rest Docs 적용&lt;/a&gt;&lt;/p&gt;</content><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><category term="Spring," /><category term="Java," /><category term="SpringRestDocs" /><summary type="html">1. Spring Rest Docs 도입 이유</summary></entry></feed>
+&lt;p&gt;&lt;a href=&quot;https://techblog.woowahan.com/2597/&quot;&gt;Spring Rest Docs 적용&lt;/a&gt;&lt;/p&gt;</content><author><name>JongHyun Lee</name><email>dev.jonghyun89@gmail.com</email></author><category term="Spring," /><category term="Java," /><category term="SpringRestDocs" /><summary type="html">목차</summary></entry></feed>
